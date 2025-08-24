@@ -37,7 +37,7 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: spring-boot-app
+          name: spring-ai-chatbot
           path: target/*.jar
 
 #   Job 2: Build and Push Docker Image
