@@ -1,7 +1,7 @@
 # .github/workflows/maven.yml
 
 # Workflow name for easy identification in GitHub Actions UI.
-name: Maven & Spring Boot CI/CD
+name: sprin
 
 # Define the events that trigger this workflow.
 on:
