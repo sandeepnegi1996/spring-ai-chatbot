@@ -7,10 +7,10 @@ name: Maven & Spring Boot CI/CD
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 # A workflow run is made up of one or more jobs.
 jobs:
@@ -24,7 +24,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
           cache: 'maven'
 
@@ -69,7 +69,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lei-processor-app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/spring-ai-chatbot:latest
           file: ./Dockerfile
 
   # Job 3: Deploy to a Free Hosting Provider
