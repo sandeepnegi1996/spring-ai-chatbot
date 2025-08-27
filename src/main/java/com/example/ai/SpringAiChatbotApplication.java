@@ -1,9 +1,13 @@
 package com.example.ai;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+
+@SpringBootApplication(exclude = {
+        org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration.class
+})
 public class SpringAiChatbotApplication {
     public static void main(String[] args) {
         SpringApplication.run(SpringAiChatbotApplication.class, args);
