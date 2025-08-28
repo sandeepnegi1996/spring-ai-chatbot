@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-@SpringBootApplication(exclude = {
-        org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration.class
-})
+@SpringBootApplication
 public class SpringAiChatbotApplication {
     public static void main(String[] args) {
         SpringApplication.run(SpringAiChatbotApplication.class, args);
