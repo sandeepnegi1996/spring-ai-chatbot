@@ -1,0 +1,25 @@
+spring:
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.3
+
+    transformers:
+      embedding:
+        model: sentence-transformers/all-MiniLM-L6-v2   # local embedding model
+
+    vectorstore:
+      pgvector:
+      index-type: HNSW
+      distance-type: COSINE_DISTANCE
+      dimension: 384   # NOTE: this matches the MiniLM model output size
+  datasource:
+    url: jdbc:postgresql://localhost:15438/vectorstore
+    username: vectorstore
+    password: vectorstore
+
+weatherService:
+  apiNinjasKey: ${API_NINJAS_KEY}
