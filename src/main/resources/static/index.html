@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>HR Assistant (RAG)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+        .card { max-width: 820px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.04); }
+        h1 { margin-top: 0; font-size: 20px; }
+        textarea { width: 100%; min-height: 80px; padding: 10px; border-radius: 8px; border: 1px solid #d1d5db; }
+        button { padding: 10px 14px; border: 0; border-radius: 8px; background: #111827; color: #fff; cursor: pointer; }
+        button[disabled]{ opacity: .6; cursor: not-allowed; }
+        .answer { white-space: pre-wrap; background: #f9fafb; border: 1px solid #e5e7eb; padding: 12px; border-radius: 8px; }
+        .sources { margin-top: 10px; font-size: 14px; color: #374151; }
+        .source-item { padding: 8px 10px; border-left: 3px solid #d1d5db; background: #f9fafb; border-radius: 6px; margin-bottom: 8px; }
+        .muted { color: #6b7280; font-size: 12px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>HR Handbook Assistant</h1>
+    <p class="muted">Ask about leaves, reimbursements, policies, etc. (Answers are grounded in your indexed handbook.)</p>
+
+    <label for="q">Your question</label>
+    <textarea id="q" placeholder="e.g., How many annual leaves am I entitled to?"></textarea>
+    <div style="margin-top:10px;">
+        <button id="askBtn">Ask</button>
+        <span id="status" class="muted" style="margin-left:8px;"></span>
+    </div>
+
+    <h3 style="margin-top:24px;">Answer</h3>
+    <div id="answer" class="answer">—</div>
+
+    <h3 style="margin-top:16px;">Sources</h3>
+    <div id="sources" class="sources">—</div>
+</div>
+
+<script>
+    const qEl = document.getElementById('q');
+    const btn = document.getElementById('askBtn');
+    const statusEl = document.getElementById('status');
+    const answerEl = document.getElementById('answer');
+    const sourcesEl = document.getElementById('sources');
+
+    async function ask() {
+      const question = qEl.value.trim();
+      if (!question) return;
+
+      btn.disabled = true;
+      statusEl.textContent = 'Thinking…';
+      answerEl.textContent = '—';
+      sourcesEl.textContent = '—';
+
+      try {
+        const res = await fetch('/vector/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error('Server error: ' + text);
+        }
+
+        const data = await res.json();
+        answerEl.textContent = data.answer || 'No answer.';
+        if (data.sources && data.sources.length) {
+          sourcesEl.innerHTML = data.sources.map(s =>
+            `<div class="source-item"><strong>ID:</strong> ${s.id || '—'}<br/>${s.preview || ''}</div>`
+          ).join('');
+        } else {
+          sourcesEl.textContent = 'No sources returned.';
+        }
+      } catch (e) {
+        answerEl.textContent = 'Error: ' + e.message;
+      } finally {
+        btn.disabled = false;
+        statusEl.textContent = '';
+      }
+    }
+
+    btn.addEventListener('click', ask);
+    qEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) ask();
+    });
+</script>
+</body>
+</html>

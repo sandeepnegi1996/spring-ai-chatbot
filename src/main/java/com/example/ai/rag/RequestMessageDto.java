@@ -1,5 +1,5 @@
 package com.example.ai.rag;
 
-public record RequestMessageDto(String message) {
+public record RequestMessageDto(String question) {
 }
 

@@ -36,16 +36,16 @@ public class RagService {
     }
 
     /** Ask a question with RAG */
-    public String ask(String question) {
+    public ResponseMessageDto ask(String question) {
 
-//        List<Document> docs = vectorStore.similaritySearch(SearchRequest.builder().query(question).topK(3).build()); // top-3 docs
         List<Document> docs = vectorStore.similaritySearch(SearchRequest.query(question).withTopK(3)); // top-3 docs
 
         String context = docs.stream()
                 .map(Document::getFormattedContent)
                 .reduce("", (a, b) -> a + "\n" + b);
 
-       return   chatModel.call("Answer the question using the context:\n" + context + "\n\nQuestion: " + question);
+       String response =   chatModel.call("Answer the question using the context:\n" + context + "\n\nQuestion: " + question);
+       return new ResponseMessageDto(response);
 
 //        return  chatModel.prompt().user("Answer the question using the context:\n" + context + "\n\nQuestion: " + question).call().chatResponse();
 
