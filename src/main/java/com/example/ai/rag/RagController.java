@@ -25,7 +25,7 @@ public class RagController {
 
     @GetMapping("/addhrfaq")
     public ResponseEntity<String> addhrfaq() throws Exception {
-        return ResponseEntity.ok(hrFaqCsvIngestionService.ingestFAQs("src/main/resources/input/hr_faq.csv"));
+        return ResponseEntity.ok(hrFaqCsvIngestionService.ingestFAQs());
     }
 
 

@@ -1,3 +1,5 @@
+# spring.config.import=optional:file:.env[.properties]
+
 spring:
   ai:
     openai:
@@ -6,7 +8,6 @@ spring:
         options:
           model: gpt-4o-mini
           temperature: 0.3
-
     transformers:
       embedding:
         model: sentence-transformers/all-MiniLM-L6-v2   # local embedding model
@@ -15,11 +16,12 @@ spring:
       pgvector:
       index-type: HNSW
       distance-type: COSINE_DISTANCE
-      dimension: 384   # NOTE: this matches the MiniLM model output size
+      dimension: 384  # NOTE: this matches the MiniLM model output size
   datasource:
-    url: jdbc:postgresql://localhost:15438/vectorstore
-    username: vectorstore
-    password: vectorstore
+      url: ${SPRING_DATASOURCE_URL}
+      username: ${SPRING_DATASOURCE_USERNAME}
+      password: ${SPRING_DATASOURCE_PASSWORD}
 
-weatherService:
-  apiNinjasKey: ${API_NINJAS_KEY}
+
+app:
+  faq-path: ${HR_FAQ_PATH}

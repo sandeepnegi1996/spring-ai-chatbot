@@ -7,6 +7,9 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
@@ -20,8 +23,14 @@ public class HRFaqCsvIngestionService {
 
     private final VectorStore vectorStore;
 
+    @Value("${app.faq-path}")
+    private String filePath;
 
-    public String ingestFAQs(String filePath) throws Exception {
+
+    public String ingestFAQs() throws Exception {
+
+//        String filePath = "data/hr_faq.csv";
+
         try (FileReader reader = new FileReader(filePath, StandardCharsets.UTF_8);
              CSVParser csvParser = new CSVParser(reader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withTrim())) {
