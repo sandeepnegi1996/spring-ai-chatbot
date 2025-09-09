@@ -10,13 +10,15 @@ spring:
           temperature: 0.3
     transformers:
       embedding:
-        model: sentence-transformers/all-MiniLM-L6-v2   # local embedding model
+#        model: sentence-transformers/all-MiniLM-L6-v2   # local embedding model
+        model: text-embedding-ada-002   # Use OpenAI's remote embedding model
 
     vectorstore:
       pgvector:
       index-type: HNSW
       distance-type: COSINE_DISTANCE
-      dimension: 384  # NOTE: this matches the MiniLM model output size
+#      dimension: 384  # NOTE: this matches the MiniLM model output size
+      dimension: 1536  # Ada-002 output size
   datasource:
       url: ${SPRING_DATASOURCE_URL}
       username: ${SPRING_DATASOURCE_USERNAME}
