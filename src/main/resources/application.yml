@@ -23,3 +23,4 @@ spring:
 
 app:
   faq-path: ${HR_FAQ_PATH}
+#  faq-path: /data/hr_faq.csv
