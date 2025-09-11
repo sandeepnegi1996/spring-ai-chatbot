@@ -2,6 +2,7 @@
 FROM maven:3.9.6-eclipse-temurin-21 AS builder
 WORKDIR /app
 COPY . .
+COPY data/hr_faq.csv /app/data/hr_faq.csv
 RUN mvn clean package -DskipTests=True
 
 # Step 2: Runtime stage
@@ -13,4 +14,4 @@ RUN apt-get update && apt-get install -y libstdc++6
 COPY --from=builder /app/target/spring-ai-chatbot-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
