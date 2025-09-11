@@ -12,9 +12,10 @@ spring:
         model: text-embedding-ada-002   # CORRECT: OpenAI remote embedding model
     vectorstore:
       pgvector:
-        index-type: HNSW
-        distance-type: COSINE_DISTANCE
-        dimension: 1536  # Ada-002 output size
+        initialize-schema: false
+      index-type: HNSW
+      distance-type: COSINE_DISTANCE
+      dimension: 1536   # NOTE: this matches the MiniLM model output size
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
