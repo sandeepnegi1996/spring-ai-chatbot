@@ -5,9 +5,13 @@ COPY . .
 RUN mvn clean package -DskipTests=True
 
 # Step 2: Runtime stage
+# Use the Debian-based Temurin image
 FROM eclipse-temurin:21-jre
 WORKDIR /app
+# Install the missing C++ shared library runtime for full compatibility
+RUN apt-get update && apt-get install -y libstdc++6
 COPY --from=builder /app/target/spring-ai-chatbot-0.0.1-SNAPSHOT.jar app.jar
 
+COPY data/hr_faq.csv /app/data/hr_faq.csv
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]

@@ -1,0 +1,38 @@
+# spring.config.import=optional:file:.env[.properties]
+
+spring:
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.3
+      embedding:
+#        model: text-embedding-ada-002
+        model: text-embedding-3-small
+#    transformers:
+#      embedding:
+#        model: sentence-transformers/all-MiniLM-L6-v2   # local embedding model
+
+#    vectorstore:
+#      pgvector:
+#      index-type: HNSW
+#      distance-type: COSINE_DISTANCE
+#      dimension: 1536   # NOTE: this matches the MiniLM model output size
+
+    vectorstore:
+      pgvector:
+        initialize-schema: false
+      index-type: HNSW
+      distance-type: COSINE_DISTANCE
+      dimension: 1536   # NOTE: this matches the MiniLM model output size
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+
+app:
+  faq-path: ${HR_FAQ_PATH}
+#  faq-path: /data/hr_faq.csv
